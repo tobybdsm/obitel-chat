@@ -113,7 +113,25 @@ export default {
       const room = env.CHAT_ROOM.get(id);
       return room.fetch(request);
     }
-
+  
+  if (url.pathname === '/feed') {
+    try {
+      const tgRes = await fetch('https://t.me/s/bdsm_domin', {
+        headers: { 'User-Agent': 'Mozilla/5.0' }
+      });
+      const html = await tgRes.text();
+      return new Response(html, {
+        status: 200
+        headers: {
+           'Content-Type': 'text/html;charset=utf-8',
+            'Access-Control-Allow-Origin': '*'
+      }
+    });
+  } catch (e) {
+    return new Response('Ошибка загрузки ленты', { status: 502 });
+  }
+  }
+    
     return new Response('Обитель • WebSocket шлюз активен', { status: 200, headers: { 'Content-Type': 'text/plain; charset=utf-8' } });
   }
 };
