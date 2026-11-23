@@ -1,7 +1,7 @@
 export class ChatRoom {
-  constructor(state) {
+  constructor(state, env) {
     this.state = state;
-    this.sessions = new Map();
+    this.env = env;
     this.bannedHashes = new Map();
   }
 
@@ -32,7 +32,7 @@ export class ChatRoom {
           }
           session.nick = cleanNick;
           session.role = String(data.role || 'Наблюдатель').slice(0, 20);
-          session.isAdmin = data.pass === this.state.env?.ADMIN_PASS;
+          session.isAdmin = data.pass === this.env?.ADMIN_PASS;
           server.send(JSON.stringify({ type: 'auth', isAdmin: session.isAdmin }));
           this.broadcastUsers();
         }
