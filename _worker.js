@@ -2,6 +2,7 @@ export class ChatRoom {
   constructor(state, env) {
     this.state = state;
     this.env = env;
+    this.sessions = new Map();
     this.bannedHashes = new Map();
   }
 
