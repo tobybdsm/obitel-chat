@@ -108,28 +108,12 @@ export default {
   async fetch(request, env) {
     const url = new URL(request.url);
 
-    if (url.pathname === '/robots.txt') {
-      return new Response("User-agent: *\nAllow: /\nSitemap: " + url.origin + "/sitemap.xml", {
-        headers: { 'Content-Type': 'text/plain' }
-      });
-    }
-
-    if (url.pathname === '/sitemap.xml') {
-      const xml = <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://sitemaps.org">
-  <url><loc>${url.origin}/</loc></url>
-  <url><loc>${url.origin}/lenta.html</loc></url>
-  <url><loc>${url.origin}/chat.html</loc></url>
-</urlset>;
-      return new Response(xml, { headers: { 'Content-Type': 'application/xml' } });
-    }
-
-    if (url.pathname === '/ws' && request.headers.get('Upgrade') === 'websocket') {
+   if (url.pathname === '/ws' && request.headers.get('Upgrade') === 'websocket') {
       const id = env.CHAT_ROOM.idFromName('global-obitel-room');
       const room = env.CHAT_ROOM.get(id);
       return room.fetch(request);
     }
 
-    return env.ASSETS.fetch(request);
+    return new Response('Обитель • WebSocket шлюз активен', { status: 200, headers: { 'Content-Type': 'text/plain; charset=utf-8' } });
   }
 };
